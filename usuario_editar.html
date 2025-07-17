@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Sistema - Editar Usuário</title>
+    <link rel="stylesheet" href="/css/menu_lateral.css">
+</head>
+<body>
+    <div class="sidebar">
+    <div class="sidebar-header">
+        <h2>GMOP</h2> </div>
+    <ul class="menu-principal">
+       <li><a href="/"> <span class="icon">🏠</span> Início</a></li>
+
+        <li class="menu-item com-submenu">
+            <a href="#" class="submenu-toggle">
+                <span class="icon">📄</span> Cadastros Gerais <span class="seta">►</span>
+            </a>
+            <ul class="submenu">
+                <li><a href="/tipos-usuario">Tipos de Usuário</a></li>
+                <li><a href="/niveis-acesso">Níveis de Acesso</a></li>
+                <li><a href="/tp-cre">Tipos de CRE</a></li>
+                <li><a href="/escolas">Escolas</a></li>
+                <li><a href="/usuarios">Usuários</a></li>
+            </ul>
+        </li>
+
+        <li class="menu-item com-submenu">
+            <a href="#" class="submenu-toggle">
+                <span class="icon">📚</span> Cad. Pedagógico <span class="seta">►</span>
+            </a>
+            <ul class="submenu">
+                <li class="menu-item com-submenu nivel-2"> <a href="#" class="submenu-toggle">
+                        <span class="icon">🏛️</span> Estruturas Fundamentais <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/modalidades">Modalidades de Ensino</a></li>
+                        <li><a href="/pedagogico/turnos">Turnos</a></li>
+                        <li><a href="/pedagogico/ofertas">Etapas de Ensino</a></li>
+                        <li><a href="/pedagogico/series">Séries/Anos</a></li>
+                        <li><a href="/pedagogico/periodos-serie">Períodos da Série</a></li>
+                        <li><a href="/pedagogico/periodos-letivos">Períodos Letivos</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item com-submenu nivel-2">
+                    <a href="#" class="submenu-toggle">
+                        <span class="icon">🧩</span> Componentes Curriculares <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/tipos-habilitacao">Tipos de Habilitação</a></li>
+                        <li><a href="/pedagogico/tipos-componente">Tipos de Componente</a></li>
+                        <li><a href="/pedagogico/grupos-disciplina">Grupos de Disciplinas</a></li>
+                        <li><a href="/pedagogico/componentes-curriculares">Componentes (Disciplinas)</a></li>
+                        <li><a href="/pedagogico/componente-grupo-associacao">Associação Componente-Grupo</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item com-submenu nivel-2">
+                    <a href="#" class="submenu-toggle">
+                        <span class="icon">🧭</span> Percursos e UCs <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/tipos-percurso">Tipos de Percurso</a></li>
+                        <li><a href="/pedagogico/ofertas-uc-percurso">Ofertas de UC por Percurso</a></li>
+                    </ul>
+                </li>
+                </ul>
+        </li>
+        
+        </ul>
+</div>
+
+    <div class="main-content">
+        <header class="top-header">
+            <h1>Nome do Sistema</h1>
+        </header>
+        <div class="page-content">
+            <h2>Editar Usuário</h2>
+            <form id="editUsuarioForm" method="POST"> <div>
+                    <label for="nome_completo">Nome Completo:</label>
+                    <input type="text" id="nome_completo" name="nome_completo" required>
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email"> </div>
+                <div>
+                    <label for="matricula">Matrícula (8 caracteres):</label>
+                    <input type="text" id="matricula" name="matricula" maxlength="8">
+                </div>
+                <div>
+                    <label for="data_admissao">Data de Admissão:</label>
+                    <input type="date" id="data_admissao" name="data_admissao">
+                </div>
+                <div>
+                    <label for="id_cad_escola">Escola (Opcional):</label>
+                    <select id="id_cad_escola" name="id_cad_escola">
+                        <option value="">Nenhuma/Selecione...</option>
+                        </select>
+                </div>
+                <div>
+                    <label for="id_tipo_usuario">Tipo de Usuário:</label>
+                    <select id="id_tipo_usuario" name="id_tipo_usuario" required>
+                        <option value="">Selecione...</option>
+                        </select>
+                </div>
+                <div>
+                    <label for="id_nivel_acesso">Nível de Acesso:</label>
+                    <select id="id_nivel_acesso" name="id_nivel_acesso" required>
+                        <option value="">Selecione...</option>
+                        </select>
+                </div>
+                <div>
+                    <label for="senha">Nova Senha (deixe em branco para não alterar):</label>
+                    <input type="password" id="senha" name="senha">
+                </div>
+                <div>
+                    <label for="confirmar_senha">Confirmar Nova Senha:</label>
+                    <input type="password" id="confirmar_senha" name="confirmar_senha">
+                </div>
+                <div>
+                    <label for="status_usuario">Status:</label>
+                    <select id="status_usuario" name="status_usuario" required>
+                        <option value="ATIVO">Ativo</option>
+                        <option value="INATIVO">Inativo</option>
+                    </select>
+                </div>
+                <button type="submit">Salvar Alterações</button>
+                <a href="/usuarios" class="cancel-link">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/menu_lateral.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const form = document.getElementById('editUsuarioForm');
+            const pathParts = window.location.pathname.split('/');
+            const itemId = pathParts[pathParts.length - 1];
+
+            if (!itemId || isNaN(parseInt(itemId))) {
+                alert('ID de usuário inválido na URL.');
+                window.location.href = '/usuarios';
+                return;
+            }
+            form.action = `/api/usuarios/${itemId}`; // API PUT
+
+            // Carregar selects
+            const selectTipoUsuario = document.getElementById('id_tipo_usuario');
+            const selectNivelAcesso = document.getElementById('id_nivel_acesso');
+            const selectEscola = document.getElementById('id_cad_escola');
+
+            try { // Tipos de Usuário
+                const resTipos = await fetch('/api/tipos-usuario');
+                const tipos = await resTipos.json();
+                tipos.forEach(t => selectTipoUsuario.add(new Option(t.descricao, t.id_tipo_usuario)));
+            } catch (e) { console.error("Erro ao carregar tipos de usuário", e); }
+
+            try { // Níveis de Acesso
+                const resNiveis = await fetch('/api/niveis-acesso');
+                const niveis = await resNiveis.json();
+                niveis.forEach(n => selectNivelAcesso.add(new Option(n.descricao_nivel_acesso || n.descricao, n.id_nivel_acesso)));
+            } catch (e) { console.error("Erro ao carregar níveis de acesso", e); }
+            
+            try { // Escolas
+                const resEscolas = await fetch('/api/escolas');
+                const escolas = await resEscolas.json();
+                escolas.forEach(e => selectEscola.add(new Option(e.nome_escola, e.id_cad_escola)));
+            } catch (e) { console.error("Erro ao carregar escolas", e); }
+
+            // Carregar dados do Usuário para edição
+            try {
+                const responseUsuario = await fetch(form.action); // GET /api/usuarios/:id
+                if (!responseUsuario.ok) throw new Error('Falha ao buscar dados do usuário.');
+                const usuario = await responseUsuario.json();
+                if (usuario.error) throw new Error(usuario.message || 'Usuário não encontrado.');
+
+                document.getElementById('nome_completo').value = usuario.nome_completo;
+                document.getElementById('email').value = usuario.email || '';
+                document.getElementById('matricula').value = usuario.matricula || '';
+                if(usuario.data_admissao) { // Formato YYYY-MM-DD para input date
+                     document.getElementById('data_admissao').value = usuario.data_admissao.split('T')[0];
+                }
+                selectEscola.value = usuario.id_cad_escola || "";
+                selectTipoUsuario.value = usuario.id_tipo_usuario;
+                selectNivelAcesso.value = usuario.id_nivel_acesso;
+                document.getElementById('status_usuario').value = usuario.status_usuario; // Backend salva 'ATIVO'/'INATIVO'
+                // Não preenchemos a senha
+
+            } catch (error) {
+                console.error('Erro ao carregar dados do usuário:', error);
+                alert(error.message || 'Erro ao carregar dados do usuário.');
+                window.location.href = '/usuarios';
+            }
+
+            // Submissão do formulário
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const senha = document.getElementById('senha').value;
+                const confirmarSenha = document.getElementById('confirmar_senha').value;
+
+                if (senha && senha !== confirmarSenha) { // Só valida se nova senha foi digitada
+                    alert('As novas senhas não coincidem!');
+                    return;
+                }
+
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                if (!senha) { // Se a senha não foi alterada, não envia o campo senha
+                    delete data.senha;
+                }
+                delete data.confirmar_senha;
+
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    });
+                    const result = await response.json();
+                    if (!response.ok) {
+                        alert('Erro: ' + (result.message || 'Ocorreu um problema ao atualizar.'));
+                    } else {
+                        alert(result.message || 'Atualização realizada com sucesso!');
+                        if (result.redirectUrl) {
+                            window.location.href = result.redirectUrl;
+                        } else {
+                            window.location.href = '/usuarios'; //Fallback
+                        }
+                    }
+                } catch (error) {
+                    console.error('Erro na submissão:', error);
+                    alert('Erro de comunicação ao tentar atualizar.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

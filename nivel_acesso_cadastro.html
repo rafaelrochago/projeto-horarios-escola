@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Sistema - Cadastro de Nível de Acesso</title>
+    <link rel="stylesheet" href="/css/menu_lateral.css">
+</head>
+<body>
+    <div class="sidebar">
+    <div class="sidebar-header">
+        <h2>GMOP</h2> </div>
+    <ul class="menu-principal">
+        <li><a href="/"> <span class="icon">🏠</span> Início</a></li>
+
+        <li class="menu-item com-submenu">
+            <a href="#" class="submenu-toggle">
+                <span class="icon">📄</span> Cadastros Gerais <span class="seta">►</span>
+            </a>
+            <ul class="submenu">
+                <li><a href="/tipos-usuario">Tipos de Usuário</a></li>
+                <li><a href="/niveis-acesso">Níveis de Acesso</a></li>
+                <li><a href="/tp-cre">Tipos de CRE</a></li>
+                <li><a href="/escolas">Escolas</a></li>
+                <li><a href="/usuarios">Usuários</a></li>
+            </ul>
+        </li>
+
+        <li class="menu-item com-submenu">
+            <a href="#" class="submenu-toggle">
+                <span class="icon">📚</span> Cad. Pedagógico <span class="seta">►</span>
+            </a>
+            <ul class="submenu">
+                <li class="menu-item com-submenu nivel-2"> <a href="#" class="submenu-toggle">
+                        <span class="icon">🏛️</span> Estruturas Fundamentais <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/modalidades">Modalidades de Ensino</a></li>
+                        <li><a href="/pedagogico/turnos">Turnos</a></li>
+                        <li><a href="/pedagogico/ofertas">Etapas de Ensino</a></li>
+                        <li><a href="/pedagogico/series">Séries/Anos</a></li>
+                        <li><a href="/pedagogico/periodos-serie">Períodos da Série</a></li>
+                        <li><a href="/pedagogico/periodos-letivos">Períodos Letivos</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item com-submenu nivel-2">
+                    <a href="#" class="submenu-toggle">
+                        <span class="icon">🧩</span> Componentes Curriculares <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/tipos-habilitacao">Tipos de Habilitação</a></li>
+                        <li><a href="/pedagogico/tipos-componente">Tipos de Componente</a></li>
+                        <li><a href="/pedagogico/grupos-disciplina">Grupos de Disciplinas</a></li>
+                        <li><a href="/pedagogico/componentes-curriculares">Componentes (Disciplinas)</a></li>
+                        <li><a href="/pedagogico/componente-grupo-associacao">Associação Componente-Grupo</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item com-submenu nivel-2">
+                    <a href="#" class="submenu-toggle">
+                        <span class="icon">🧭</span> Percursos e UCs <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/tipos-percurso">Tipos de Percurso</a></li>
+                        <li><a href="/pedagogico/ofertas-uc-percurso">Ofertas de UC por Percurso</a></li>
+                    </ul>
+                </li>
+                </ul>
+        </li>
+        
+        </ul>
+</div>
+    <div class="main-content">
+        <header class="top-header">
+            <h1>Nome do Sistema</h1>
+        </header>
+        <div class="page-content">
+            <h2>Cadastro de Nível de Acesso</h2>
+            <form id="cadastroNivelAcessoForm" method="POST" action="api/niveis-acesso">
+                <div>
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" id="descricao" name="descricao" required>
+                </div>
+                <button type="submit">Cadastrar</button>
+                <a href="/niveis-acesso" class="cancel-link">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/menu_lateral.js"></script>
+    <script>
+        document.getElementById('cadastroNivelAcessoForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    alert('Erro: ' + (result.message || 'Ocorreu um problema.'));
+                } else {
+                    alert(result.message || 'Cadastro realizado!');
+                    if (result.redirectUrl) {
+                        window.location.href = result.redirectUrl;
+                    } else {
+                        form.reset();
+                    }
+                }
+            } catch (error) {
+                console.error('Erro na submissão:', error);
+                alert('Erro de comunicação.');
+            }
+        });
+    </script>
+</body>
+</html>

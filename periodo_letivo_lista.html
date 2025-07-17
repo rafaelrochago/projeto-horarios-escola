@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Sistema - Períodos Letivos</title>
+    <link rel="stylesheet" href="/css/menu_lateral.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header"><h2>GMOP</h2></div>
+        <ul class="menu-principal">
+            <li><a href="/"> <span class="icon">🏠</span> Início</a></li>
+            <li class="menu-item com-submenu">
+                <a href="#" class="submenu-toggle"><span class="icon">📄</span> Cadastros Gerais <span class="seta">►</span></a>
+                 <ul class="submenu">
+                    <li><a href="/tipos-usuario">Tipos de Usuário</a></li>
+                    <li><a href="/niveis-acesso">Níveis de Acesso</a></li>
+                    <li><a href="/tp-cre">Tipos de CRE</a></li>
+                    <li><a href="/escolas">Escolas</a></li>
+                    <li><a href="/usuarios">Usuários</a></li>
+                </ul>
+            </li>
+            <li class="menu-item com-submenu">
+                <a href="#" class="submenu-toggle open active"><span class="icon">📚</span> Cad. Pedagógico <span class="seta">▼</span></a>
+                <ul class="submenu" style="display: block;">
+                    <li class="menu-item com-submenu nivel-2">
+                        <a href="#" class="submenu-toggle open active"><span class="icon">🏛️</span> Estruturas Fundamentais <span class="seta">▼</span></a>
+                        <ul class="submenu" style="display: block;">
+                            <li><a href="/pedagogico/modalidades">Modalidades</a></li>
+                            <li><a href="/pedagogico/turnos">Turnos</a></li>
+                            <li><a href="/pedagogico/ofertas">Etapas de Ensino</a></li>
+                            <li><a href="/pedagogico/series">Séries/Anos</a></li>
+                            <li><a href="/pedagogico/periodos-serie">Períodos da Série</a></li>
+                            <li><a href="/pedagogico/periodos-letivos" class="active">Períodos Letivos</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header class="top-header"><h1>Nome do Sistema</h1></header>
+        <div class="page-content">
+            <h2>Períodos Letivos</h2>
+            <a href="/pedagogico/periodos-letivos/novo" class="btn-new">Novo Período Letivo</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Identificador</th>
+                        <th>Ano</th>
+                        <th>Referência</th>
+                        <th>Data Início</th>
+                        <th>Data Fim</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="listaPeriodosLetivosBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/js/menu_lateral.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/periodos-letivos')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('listaPeriodosLetivosBody');
+                    tbody.innerHTML = '';
+                    if (!data || data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">Nenhum período letivo cadastrado.</td></tr>';
+                    } else {
+                        data.forEach(item => {
+                            const tr = tbody.insertRow();
+                            tr.innerHTML = `
+                                <td>${item.id_periodo_letivo}</td>
+                                <td>${item.identificador_periodo}</td>
+                                <td>${item.ano_letivo}</td>
+                                <td>${item.referencia_periodo}</td>
+                                <td>${item.data_inicio ? new Date(item.data_inicio + 'T00:00:00').toLocaleDateString('pt-BR') : '-'}</td>
+                                <td>${item.data_fim ? new Date(item.data_fim + 'T00:00:00').toLocaleDateString('pt-BR') : '-'}</td>
+                                <td>${item.status_periodo_letivo}</td>
+                                <td class="actions">
+                                    <a href="/pedagogico/periodos-letivos/editar/${item.id_periodo_letivo}" class="btn-edit">Editar</a>
+                                    <button onclick="excluirItem(${item.id_periodo_letivo}, '/api/periodos-letivos', 'Período Letivo')" class="btn-delete">Excluir</button>
+                                </td>
+                            `;
+                        });
+                    }
+                }).catch(error => {
+                    console.error('Erro ao buscar períodos letivos:', error);
+                    document.getElementById('listaPeriodosLetivosBody').innerHTML = '<tr><td colspan="8" style="text-align:center; color:red;">Erro ao carregar dados.</td></tr>';
+                });
+        });
+        async function excluirItem(id, apiUrl, itemName) { /* ... (função excluirItem como antes) ... */ }
+    </script>
+</body>
+</html>

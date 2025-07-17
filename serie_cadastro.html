@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Sistema - Nova Série/Ano</title>
+    <link rel="stylesheet" href="/css/menu_lateral.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header"><h2>GMOP</h2></div>
+        <ul class="menu-principal">
+            <li><a href="/"> <span class="icon">🏠</span> Início</a></li>
+            <li class="menu-item com-submenu">
+                <a href="#" class="submenu-toggle"><span class="icon">📄</span> Cadastros Gerais <span class="seta">►</span></a>
+                <ul class="submenu">
+                    <li><a href="/tipos-usuario">Tipos de Usuário</a></li>
+                    <li><a href="/niveis-acesso">Níveis de Acesso</a></li>
+                    <li><a href="/tp-cre">Tipos de CRE</a></li>
+                    <li><a href="/escolas">Escolas</a></li>
+                    <li><a href="/usuarios">Usuários</a></li>
+                </ul>
+            </li>
+            <li class="menu-item com-submenu">
+                <a href="#" class="submenu-toggle open active"><span class="icon">📚</span> Cad. Pedagógico <span class="seta">▼</span></a>
+                <ul class="submenu" style="display: block;">
+                    <li class="menu-item com-submenu nivel-2">
+                        <a href="#" class="submenu-toggle open active"><span class="icon">🏛️</span> Estruturas Fundamentais <span class="seta">▼</span></a>
+                        <ul class="submenu" style="display: block;">
+                            <li><a href="/pedagogico/modalidades">Modalidades</a></li>
+                            <li><a href="/pedagogico/turnos">Turnos</a></li>
+                            <li><a href="/pedagogico/ofertas">Etapas de Ensino</a></li>
+                            <li><a href="/pedagogico/series" class="active">Séries/Anos</a></li>
+                            <li><a href="/pedagogico/periodos-serie">Períodos da Série</a></li>
+                            <li><a href="/pedagogico/periodos-letivos">Períodos Letivos</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <header class="top-header"><h1>Nome do Sistema</h1></header>
+        <div class="page-content">
+            <h2>Nova Série/Ano</h2>
+            <form id="cadastroSerieForm" method="POST" action="/api/series">
+                <div>
+                    <label for="id_modalidade">Modalidade:</label>
+                    <select id="id_modalidade" name="id_modalidade" required>
+                        <option value="">Selecione a Modalidade</option>
+                        </select>
+                </div>
+                <div>
+                    <label for="descricao_serie">Descrição da Série/Ano:</label>
+                    <input type="text" id="descricao_serie" name="descricao_serie" required>
+                </div>
+                <div>
+                    <label for="sigla_serie">Sigla (Opcional):</label>
+                    <input type="text" id="sigla_serie" name="sigla_serie">
+                </div>
+                <div>
+                    <label for="ordem">Ordem (para classificação, opcional):</label>
+                    <input type="number" id="ordem" name="ordem">
+                </div>
+                <button type="submit">Cadastrar</button>
+                <a href="/pedagogico/series" class="cancel-link">Cancelar</a>
+            </form>
+        </div>
+    </div>
+    <script src="/js/menu_lateral.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const selectModalidade = document.getElementById('id_modalidade');
+            try {
+                const response = await fetch('/api/modalidades');
+                const modalidades = await response.json();
+                modalidades.forEach(m => {
+                    selectModalidade.add(new Option(m.descricao_modalidade, m.id_modalidade));
+                });
+            } catch (error) { console.error('Erro ao carregar modalidades:', error); }
+
+            document.getElementById('cadastroSerieForm').addEventListener('submit', async function(event) {
+                event.preventDefault(); /* ... (script de submissão como os anteriores) ... */
+                const form = event.target;
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    });
+                    const result = await response.json();
+                    if (!response.ok) {
+                        alert('Erro: ' + (result.message || 'Ocorreu um problema.'));
+                    } else {
+                        alert(result.message || 'Cadastro realizado!');
+                        if (result.redirectUrl) window.location.href = result.redirectUrl;
+                        else window.location.href = '/pedagogico/series';
+                    }
+                } catch (error) { alert('Erro de comunicação.'); }
+            });
+        });
+    </script>
+</body>
+</html>

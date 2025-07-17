@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Sistema - Editar Modalidade</title>
+    <link rel="stylesheet" href="/css/menu_lateral.css">
+</head>
+<body>
+    <div class="sidebar">
+    <div class="sidebar-header">
+        <h2>GMOP</h2> </div>
+    <ul class="menu-principal">
+        <li><a href="/"> <span class="icon">🏠</span> Início</a></li>
+
+        <li class="menu-item com-submenu">
+            <a href="#" class="submenu-toggle">
+                <span class="icon">📄</span> Cadastros Gerais <span class="seta">►</span>
+            </a>
+            <ul class="submenu">
+                <li><a href="/tipos-usuario">Tipos de Usuário</a></li>
+                <li><a href="/niveis-acesso">Níveis de Acesso</a></li>
+                <li><a href="/tp-cre">Tipos de CRE</a></li>
+                <li><a href="/escolas">Escolas</a></li>
+                <li><a href="/usuarios">Usuários</a></li>
+            </ul>
+        </li>
+
+        <li class="menu-item com-submenu">
+            <a href="#" class="submenu-toggle">
+                <span class="icon">📚</span> Cad. Pedagógico <span class="seta">►</span>
+            </a>
+            <ul class="submenu">
+                <li class="menu-item com-submenu nivel-2"> <a href="#" class="submenu-toggle">
+                        <span class="icon">🏛️</span> Estruturas Fundamentais <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/modalidades">Modalidades de Ensino</a></li>
+                        <li><a href="/pedagogico/turnos">Turnos</a></li>
+                        <li><a href="/pedagogico/ofertas">Etapas de Ensino</a></li>
+                        <li><a href="/pedagogico/series">Séries/Anos</a></li>
+                        <li><a href="/pedagogico/periodos-serie">Períodos da Série</a></li>
+                        <li><a href="/pedagogico/periodos-letivos">Períodos Letivos</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item com-submenu nivel-2">
+                    <a href="#" class="submenu-toggle">
+                        <span class="icon">🧩</span> Componentes Curriculares <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/tipos-habilitacao">Tipos de Habilitação</a></li>
+                        <li><a href="/pedagogico/tipos-componente">Tipos de Componente</a></li>
+                        <li><a href="/pedagogico/grupos-disciplina">Grupos de Disciplinas</a></li>
+                        <li><a href="/pedagogico/componentes-curriculares">Componentes (Disciplinas)</a></li>
+                        <li><a href="/pedagogico/componente-grupo-associacao">Associação Componente-Grupo</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item com-submenu nivel-2">
+                    <a href="#" class="submenu-toggle">
+                        <span class="icon">🧭</span> Percursos e UCs <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/tipos-percurso">Tipos de Percurso</a></li>
+                        <li><a href="/pedagogico/ofertas-uc-percurso">Ofertas de UC por Percurso</a></li>
+                    </ul>
+                </li>
+                </ul>
+        </li>
+        
+        </ul>
+</div>
+
+    <div class="main-content">
+        <header class="top-header"><h1>Nome do Sistema</h1></header>
+        <div class="page-content">
+            <h2>Editar Modalidade de Ensino</h2>
+            <form id="editModalidadeForm" method="POST"> <div>
+                    <label for="descricao_modalidade">Descrição da Modalidade:</label>
+                    <input type="text" id="descricao_modalidade" name="descricao_modalidade" required>
+                </div>
+                <button type="submit">Salvar Alterações</button>
+                <a href="/pedagogico/modalidades" class="cancel-link">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/menu_lateral.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('editModalidadeForm');
+            const descricaoInput = document.getElementById('descricao_modalidade');
+            const pathParts = window.location.pathname.split('/');
+            const itemId = pathParts[pathParts.length - 1];
+
+            if (!itemId || isNaN(parseInt(itemId))) {
+                alert('ID da modalidade inválido na URL.');
+                window.location.href = '/pedagogico/modalidades';
+                return;
+            }
+
+            form.action = `/api/modalidades/${itemId}`; // API PUT
+
+            // Carregar dados da modalidade para edição
+            fetch(form.action) // GET /api/modalidades/:id
+                .then(response => {
+                    if (!response.ok) throw new Error('Falha ao buscar dados da modalidade.');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) throw new Error(data.message || 'Modalidade não encontrada.');
+                    descricaoInput.value = data.descricao_modalidade;
+                })
+                .catch(error => {
+                    alert(error.message || 'Erro ao carregar dados.');
+                    window.location.href = '/pedagogico/modalidades';
+                });
+
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    });
+                    const result = await response.json();
+                    if (!response.ok) {
+                        alert('Erro: ' + (result.message || 'Ocorreu um problema.'));
+                    } else {
+                        alert(result.message || 'Atualização realizada!');
+                        if (result.redirectUrl) {
+                            window.location.href = result.redirectUrl;
+                        } else {
+                            window.location.href = '/pedagogico/modalidades';
+                        }
+                    }
+                } catch (error) {
+                    alert('Erro de comunicação.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

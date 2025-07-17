@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Sistema - Editar Escola</title>
+    <link rel="stylesheet" href="/css/menu_lateral.css">
+</head>
+<body>
+    <div class="sidebar">
+    <div class="sidebar-header">
+        <h2>GMOP</h2> </div>
+    <ul class="menu-principal">
+        <li><a href="/"> <span class="icon">🏠</span> Início</a></li>
+
+        <li class="menu-item com-submenu">
+            <a href="#" class="submenu-toggle">
+                <span class="icon">📄</span> Cadastros Gerais <span class="seta">►</span>
+            </a>
+            <ul class="submenu">
+                <li><a href="/tipos-usuario">Tipos de Usuário</a></li>
+                <li><a href="/niveis-acesso">Níveis de Acesso</a></li>
+                <li><a href="/tp-cre">Tipos de CRE</a></li>
+                <li><a href="/escolas">Escolas</a></li>
+                <li><a href="/usuarios">Usuários</a></li>
+            </ul>
+        </li>
+
+        <li class="menu-item com-submenu">
+            <a href="#" class="submenu-toggle">
+                <span class="icon">📚</span> Cad. Pedagógico <span class="seta">►</span>
+            </a>
+            <ul class="submenu">
+                <li class="menu-item com-submenu nivel-2"> <a href="#" class="submenu-toggle">
+                        <span class="icon">🏛️</span> Estruturas Fundamentais <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/modalidades">Modalidades de Ensino</a></li>
+                        <li><a href="/pedagogico/turnos">Turnos</a></li>
+                        <li><a href="/pedagogico/ofertas">Etapas de Ensino</a></li>
+                        <li><a href="/pedagogico/series">Séries/Anos</a></li>
+                        <li><a href="/pedagogico/periodos-serie">Períodos da Série</a></li>
+                        <li><a href="/pedagogico/periodos-letivos">Períodos Letivos</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item com-submenu nivel-2">
+                    <a href="#" class="submenu-toggle">
+                        <span class="icon">🧩</span> Componentes Curriculares <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/tipos-habilitacao">Tipos de Habilitação</a></li>
+                        <li><a href="/pedagogico/tipos-componente">Tipos de Componente</a></li>
+                        <li><a href="/pedagogico/grupos-disciplina">Grupos de Disciplinas</a></li>
+                        <li><a href="/pedagogico/componentes-curriculares">Componentes (Disciplinas)</a></li>
+                        <li><a href="/pedagogico/componente-grupo-associacao">Associação Componente-Grupo</a></li>
+                    </ul>
+                </li>
+                <li class="menu-item com-submenu nivel-2">
+                    <a href="#" class="submenu-toggle">
+                        <span class="icon">🧭</span> Percursos e UCs <span class="seta">►</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="/pedagogico/tipos-percurso">Tipos de Percurso</a></li>
+                        <li><a href="/pedagogico/ofertas-uc-percurso">Ofertas de UC por Percurso</a></li>
+                    </ul>
+                </li>
+                </ul>
+        </li>
+        
+        </ul>
+</div>
+
+    <div class="main-content">
+        <header class="top-header">
+            <h1>Nome do Sistema</h1>
+        </header>
+        <div class="page-content">
+            <h2>Editar Escola</h2>
+            <form id="editEscolaForm" method="POST"> <div>
+                    <label for="nome_escola">Nome da Escola:</label>
+                    <input type="text" id="nome_escola" name="nome_escola" required>
+                </div>
+                <div>
+                    <label for="nome_escola_reduzido">Nome Reduzido (Opcional):</label>
+                    <input type="text" id="nome_escola_reduzido" name="nome_escola_reduzido">
+                </div>
+                <div>
+                    <label for="cod_sigrh">Código SIGRH (12 caracteres, Opcional):</label>
+                    <input type="text" id="cod_sigrh" name="cod_sigrh" maxlength="12">
+                </div>
+                 <div>
+                    <label for="cod_escola_inep">Código INEP (Opcional):</label>
+                    <input type="text" id="cod_escola_inep" name="cod_escola_inep">
+                </div>
+                <div>
+                    <label for="Id_tp_cre">Tipo de CRE:</label>
+                    <select id="Id_tp_cre" name="Id_tp_cre"> <option value="">Selecione um CRE (Opcional)</option>
+                        </select>
+                </div>
+                <div>
+                    <input type="checkbox" id="ativo" name="ativo" value="true">
+                    <label for="ativo" class="checkbox-label">Ativo</label>
+                </div>
+                <button type="submit">Salvar Alterações</button>
+                <a href="/escolas" class="cancel-link">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/menu_lateral.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const form = document.getElementById('editEscolaForm');
+            const pathParts = window.location.pathname.split('/');
+            const itemId = pathParts[pathParts.length - 1];
+
+            if (!itemId || isNaN(parseInt(itemId))) {
+                alert('ID da escola inválido na URL.');
+                window.location.href = '/escolas';
+                return;
+            }
+            form.action = `/api/escolas/${itemId}`; // API PUT
+
+            // Carregar Tipos de CRE para o select
+            const selectCre = document.getElementById('Id_tp_cre');
+            try {
+                const responseCre = await fetch('/api/tp-cre');
+                if (!responseCre.ok) throw new Error('Falha ao carregar Tipos de CRE.');
+                const tiposCre = await responseCre.json();
+                tiposCre.forEach(cre => {
+                    const option = document.createElement('option');
+                    option.value = cre.id_tipo_cre;
+                    option.textContent = `${cre.sigla_tipo_cre} - ${cre.descricao_tipo_cre}`;
+                    selectCre.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar Tipos de CRE:', error);
+                selectCre.innerHTML = '<option value="">Erro ao carregar CREs</option>';
+            }
+
+            // Carregar dados da Escola para edição
+            try {
+                const responseEscola = await fetch(form.action); // GET /api/escolas/:id
+                if (!responseEscola.ok) throw new Error('Falha ao buscar dados da escola.');
+                const escola = await responseEscola.json();
+                if (escola.error) throw new Error(escola.message || 'Escola não encontrada.');
+
+                document.getElementById('nome_escola').value = escola.nome_escola;
+                document.getElementById('nome_escola_reduzido').value = escola.nome_escola_reduzido || '';
+                document.getElementById('cod_sigrh').value = escola.cod_escola_sigrh || '';
+                document.getElementById('cod_escola_inep').value = escola.cod_escola_inep || '';
+                if (escola.id_tipo_cre) { // Se tiver um CRE associado
+                    selectCre.value = escola.id_tipo_cre;
+                }
+                document.getElementById('ativo').checked = escola.ativo; // 'ativo' deve ser booleano aqui
+            } catch (error) {
+                console.error('Erro ao carregar dados da escola:', error);
+                alert(error.message || 'Erro ao carregar dados da escola.');
+                window.location.href = '/escolas';
+            }
+
+            // Submissão do formulário
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const formData = new FormData(form);
+                const data = {};
+                formData.forEach((value, key) => { data[key] = value; });
+                 // Garante que 'ativo' seja enviado como 'true' ou 'false' string para o backend se necessário,
+                 // ou o backend lida com 'on'/'undefined'. O backend já trata 'true'/'false' booleano.
+                data.ativo = formData.has('ativo'); // Envia true se marcado, false se não
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    });
+                    const result = await response.json();
+                    if (!response.ok) {
+                        alert('Erro: ' + (result.message || 'Ocorreu um problema ao atualizar.'));
+                    } else {
+                        alert(result.message || 'Atualização realizada com sucesso!');
+                        if (result.redirectUrl) {
+                            window.location.href = result.redirectUrl;
+                        } else {
+                            window.location.href = '/escolas'; //Fallback
+                        }
+                    }
+                } catch (error) {
+                    console.error('Erro na submissão:', error);
+                    alert('Erro de comunicação ao tentar atualizar.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

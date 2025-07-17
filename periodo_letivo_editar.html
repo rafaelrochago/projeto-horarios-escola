@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Sistema - Editar Período Letivo</title>
+    <link rel="stylesheet" href="/css/menu_lateral.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header"><h2>GMOP</h2></div>
+        <ul class="menu-principal">
+           <li><a href="/"> <span class="icon">🏠</span> Início</a></li>
+            <li class="menu-item com-submenu">
+                <a href="#" class="submenu-toggle"><span class="icon">📄</span> Cadastros Gerais <span class="seta">►</span></a>
+                 <ul class="submenu">
+                    <li><a href="/tipos-usuario">Tipos de Usuário</a></li>
+                    <li><a href="/niveis-acesso">Níveis de Acesso</a></li>
+                    <li><a href="/tp-cre">Tipos de CRE</a></li>
+                    <li><a href="/escolas">Escolas</a></li>
+                    <li><a href="/usuarios">Usuários</a></li>
+                </ul>
+            </li>
+            <li class="menu-item com-submenu">
+                <a href="#" class="submenu-toggle open active"><span class="icon">📚</span> Cad. Pedagógico <span class="seta">▼</span></a>
+                <ul class="submenu" style="display: block;">
+                    <li class="menu-item com-submenu nivel-2">
+                        <a href="#" class="submenu-toggle open active"><span class="icon">🏛️</span> Estruturas Fundamentais <span class="seta">▼</span></a>
+                        <ul class="submenu" style="display: block;">
+                            <li><a href="/pedagogico/modalidades">Modalidades</a></li>
+                            <li><a href="/pedagogico/turnos">Turnos</a></li>
+                            <li><a href="/pedagogico/ofertas">Etapas de Ensino</a></li>
+                            <li><a href="/pedagogico/series">Séries/Anos</a></li>
+                            <li><a href="/pedagogico/periodos-serie">Períodos da Série</a></li>
+                            <li><a href="/pedagogico/periodos-letivos" class="active">Períodos Letivos</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <header class="top-header"><h1>Nome do Sistema</h1></header>
+        <div class="page-content">
+            <h2>Editar Período Letivo</h2>
+            <form id="editPeriodoLetivoForm" method="POST">
+                 <div>
+                    <label for="ano_letivo">Ano Letivo (Ex: 2025):</label>
+                    <input type="number" id="ano_letivo" name="ano_letivo" min="1900" max="2200" required>
+                </div>
+                <div>
+                    <label for="referencia_periodo">Referência (Ex: 1º Semestre, Anual, Trimestre 1):</label>
+                    <input type="text" id="referencia_periodo" name="referencia_periodo" required>
+                </div>
+                <div>
+                    <label for="identificador_periodo">Identificador Único (Ex: 2025/1, 2025-ANUAL):</label>
+                    <input type="text" id="identificador_periodo" name="identificador_periodo" required>
+                </div>
+                <div>
+                    <label for="data_inicio">Data de Início (Opcional):</label>
+                    <input type="date" id="data_inicio" name="data_inicio">
+                </div>
+                <div>
+                    <label for="data_fim">Data de Fim (Opcional):</label>
+                    <input type="date" id="data_fim" name="data_fim">
+                </div>
+                <div>
+                    <label for="status_periodo_letivo">Status:</label>
+                    <select id="status_periodo_letivo" name="status_periodo_letivo">
+                        <option value="Planejamento">Planejamento</option>
+                        <option value="Aberto para Matrículas">Aberto para Matrículas</option>
+                        <option value="Em Curso">Em Curso</option>
+                        <option value="Encerrado">Encerrado</option>
+                    </select>
+                </div>
+                <button type="submit">Salvar Alterações</button>
+                <a href="/pedagogico/periodos-letivos" class="cancel-link">Cancelar</a>
+            </form>
+        </div>
+    </div>
+    <script src="/js/menu_lateral.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const form = document.getElementById('editPeriodoLetivoForm');
+            const pathParts = window.location.pathname.split('/');
+            const itemId = pathParts[pathParts.length - 1];
+
+            if (!itemId || isNaN(parseInt(itemId))) {
+                alert('ID inválido.'); window.location.href = '/pedagogico/periodos-letivos'; return;
+            }
+            form.action = `/api/periodos-letivos/${itemId}`;
+
+            try {
+                const response = await fetch(form.action); // GET /api/periodos-letivos/:id
+                if (!response.ok) throw new Error('Falha ao buscar dados.');
+                const item = await response.json();
+                if (item.error) throw new Error(item.message);
+                
+                document.getElementById('ano_letivo').value = item.ano_letivo;
+                document.getElementById('referencia_periodo').value = item.referencia_periodo;
+                document.getElementById('identificador_periodo').value = item.identificador_periodo;
+                document.getElementById('data_inicio').value = item.data_inicio ? item.data_inicio.split('T')[0] : '';
+                document.getElementById('data_fim').value = item.data_fim ? item.data_fim.split('T')[0] : '';
+                document.getElementById('status_periodo_letivo').value = item.status_periodo_letivo;
+
+            } catch (e) {
+                alert(e.message || 'Erro ao carregar dados.'); window.location.href = '/pedagogico/periodos-letivos';
+            }
+
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault(); /* ... (script de submissão PUT como os anteriores) ... */
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    });
+                    const result = await response.json();
+                    if (!response.ok) {
+                        alert('Erro: ' + (result.message || 'Problema ao atualizar.'));
+                    } else {
+                        alert(result.message || 'Atualizado com sucesso!');
+                        if (result.redirectUrl) window.location.href = result.redirectUrl;
+                        else window.location.href = '/pedagogico/periodos-letivos';
+                    }
+                } catch (error) { alert('Erro de comunicação.'); }
+            });
+        });
+    </script>
+</body>
+</html>

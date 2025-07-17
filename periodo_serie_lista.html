@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Sistema - Períodos da Série</title>
+    <link rel="stylesheet" href="/css/menu_lateral.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header"><h2>GMOP</h2></div>
+        <ul class="menu-principal">
+            <li><a href="/"> <span class="icon">🏠</span> Início</a></li>
+            <li class="menu-item com-submenu">
+                <a href="#" class="submenu-toggle"><span class="icon">📄</span> Cadastros Gerais <span class="seta">►</span></a>
+                <ul class="submenu">
+                    <li><a href="/tipos-usuario">Tipos de Usuário</a></li>
+                    <li><a href="/niveis-acesso">Níveis de Acesso</a></li>
+                    <li><a href="/tp-cre">Tipos de CRE</a></li>
+                    <li><a href="/escolas">Escolas</a></li>
+                    <li><a href="/usuarios">Usuários</a></li>
+                </ul>
+            </li>
+            <li class="menu-item com-submenu">
+                <a href="#" class="submenu-toggle open active"><span class="icon">📚</span> Cad. Pedagógico <span class="seta">▼</span></a>
+                <ul class="submenu" style="display: block;">
+                    <li class="menu-item com-submenu nivel-2">
+                        <a href="#" class="submenu-toggle open active"><span class="icon">🏛️</span> Estruturas Fundamentais <span class="seta">▼</span></a>
+                        <ul class="submenu" style="display: block;">
+                            <li><a href="/pedagogico/modalidades">Modalidades</a></li>
+                            <li><a href="/pedagogico/turnos">Turnos</a></li>
+                            <li><a href="/pedagogico/ofertas">Etapas de Ensino</a></li>
+                            <li><a href="/pedagogico/series">Séries/Anos</a></li>
+                            <li><a href="/pedagogico/periodos-serie" class="active">Períodos da Série</a></li>
+                            <li><a href="/pedagogico/periodos-letivos">Períodos Letivos</a></li>
+                        </ul>
+                    </li>
+                    </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header class="top-header"><h1>Nome do Sistema</h1></header>
+        <div class="page-content">
+            <h2>Períodos da Série</h2>
+            <a href="/pedagogico/periodos-serie/novo" class="btn-new">Novo Período da Série</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Período</th>
+                        <th>Descrição do Período</th>
+                        <th>Sigla</th>
+                        <th>Série (Modalidade)</th>
+                        <th>Ordem</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="listaPeriodosSerieBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/js/menu_lateral.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/periodos-serie')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('listaPeriodosSerieBody');
+                    tbody.innerHTML = '';
+                    if (!data || data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Nenhum período de série cadastrado.</td></tr>';
+                    } else {
+                        data.forEach(item => {
+                            const tr = tbody.insertRow();
+                            tr.innerHTML = `
+                                <td>${item.id_periodo_serie}</td>
+                                <td>${item.descricao_periodo}</td>
+                                <td>${item.sigla_periodo || '-'}</td>
+                                <td>${item.descricao_serie} (${item.descricao_modalidade})</td>
+                                <td>${item.ordem || '-'}</td>
+                                <td class="actions">
+                                    <a href="/pedagogico/periodos-serie/editar/${item.id_periodo_serie}" class="btn-edit">Editar</a>
+                                    <button onclick="excluirItem(${item.id_periodo_serie}, '/api/periodos-serie', 'Período da Série')" class="btn-delete">Excluir</button>
+                                </td>
+                            `;
+                        });
+                    }
+                }).catch(error => {
+                    console.error('Erro ao buscar períodos da série:', error);
+                    document.getElementById('listaPeriodosSerieBody').innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Erro ao carregar dados.</td></tr>';
+                });
+        });
+        async function excluirItem(id, apiUrl, itemName) {
+            if (confirm(`Tem certeza que deseja excluir ${itemName} ID ${id}?`)) {
+                try {
+                    const response = await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+                    const result = await response.json();
+                    if (!response.ok) {
+                        alert('Erro: ' + (result.message || `Não foi possível excluir ${itemName}. Verifique se não está em uso.`));
+                    } else {
+                        alert(result.message || `${itemName} excluído(a) com sucesso!`);
+                        window.location.reload();
+                    }
+                } catch (error) {
+                    alert(`Erro de comunicação ao excluir ${itemName}.`);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

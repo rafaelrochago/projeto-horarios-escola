@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Sistema - Bem-vindo!</title>
+    <link rel="stylesheet" href="/css/menu_lateral.css">
+    <style>
+        /* Estilos adicionais específicos para esta página, se necessário */
+        .welcome-container {
+            padding: 40px;
+            text-align: center;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .welcome-container h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .welcome-container p {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.6;
+            max-width: 700px; /* Para melhor legibilidade */
+            margin: 0 auto; /* Centraliza o parágrafo se ele for menor que o container */
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header"><h2>GMOP</h2></div>
+        <ul class="menu-principal">
+            <li><a href="/" class="active"> <span class="icon">🏠</span> Início</a></li> <li class="menu-item com-submenu">
+                <a href="#" class="submenu-toggle"><span class="icon">📄</span> Cadastros Gerais <span class="seta">►</span></a>
+                <ul class="submenu">
+                    <li><a href="/tipos-usuario">Tipos de Usuário</a></li>
+                    <li><a href="/niveis-acesso">Níveis de Acesso</a></li>
+                    <li><a href="/tp-cre">Tipos de CRE</a></li>
+                    <li><a href="/escolas">Escolas</a></li>
+                    <li><a href="/usuarios">Usuários</a></li>
+                </ul>
+            </li>
+            <li class="menu-item com-submenu">
+                <a href="#" class="submenu-toggle"><span class="icon">📚</span> Cad. Pedagógico <span class="seta">►</span></a>
+                <ul class="submenu">
+                    <li class="menu-item com-submenu nivel-2">
+                        <a href="#" class="submenu-toggle"><span class="icon">🏛️</span> Estruturas Fundamentais <span class="seta">►</span></a>
+                        <ul class="submenu">
+                            <li><a href="/pedagogico/modalidades">Modalidades de Ensino</a></li>
+                            <li><a href="/pedagogico/turnos">Turnos</a></li>
+                            <li><a href="/pedagogico/ofertas">Etapas de Ensino</a></li>
+                            <li><a href="/pedagogico/series">Séries/Anos</a></li>
+                            <li><a href="/pedagogico/periodos-serie">Períodos da Série</a></li>
+                            <li><a href="/pedagogico/periodos-letivos">Períodos Letivos</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item com-submenu nivel-2">
+                        <a href="#" class="submenu-toggle"><span class="icon">🧩</span> Componentes Curriculares <span class="seta">►</span></a>
+                        <ul class="submenu">
+                            <li><a href="/pedagogico/tipos-habilitacao">Tipos de Habilitação</a></li>
+                            <li><a href="/pedagogico/tipos-componente">Tipos de Componente</a></li>
+                            <li><a href="/pedagogico/grupos-disciplina">Grupos de Disciplinas</a></li>
+                            <li><a href="/pedagogico/componentes-curriculares">Componentes (Disciplinas)</a></li>
+                            <li><a href="/pedagogico/componente-grupo-associacao">Associação Componente-Grupo</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item com-submenu nivel-2">
+                        <a href="#" class="submenu-toggle"><span class="icon">🧭</span> Percursos e UCs <span class="seta">►</span></a>
+                        <ul class="submenu">
+                            <li><a href="/pedagogico/tipos-percurso">Tipos de Percurso</a></li>
+                            <li><a href="/pedagogico/ofertas-uc-percurso">Ofertas de UC por Percurso</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header class="top-header"><h1>Nome do Sistema</h1></header>
+        <div class="page-content">
+            <div class="welcome-container">
+                <h2>Seja bem-vindo ao Sistema de Modulação!</h2>
+                <p>
+                    Esse é um sistema para a gestão de modulações de ensino fundamental 2 e Ensino Médio. 
+                    Para utilizar, acesse as opções no menu lateral.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/menu_lateral.js"></script>
+    </body>
+</html>

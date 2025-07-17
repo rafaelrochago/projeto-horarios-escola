@@ -1,0 +1,284 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e9ecef; /* Fundo geral das páginas */
+    display: flex; 
+}
+
+.sidebar {
+    width: 260px;
+    background-color: #343a40; 
+    color: #fff;
+    height: 100vh; 
+    position: fixed; 
+    left: 0;
+    top: 0;
+    padding-top: 0;
+    overflow-y: auto; 
+    z-index: 1000; /* Para garantir que fique na frente */
+    transition: width 0.3s ease; 
+}
+
+.sidebar-header {
+    padding: 15px 20px;
+    background-color: #007bff; 
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    border-bottom: 1px solid #4f5962;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    color: #fff;
+}
+
+.menu-principal {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-principal li a, .menu-principal li .submenu-toggle {
+    display: block;
+    padding: 15px 20px;
+    color: #adb5bd; 
+    text-decoration: none;
+    border-bottom: 1px solid #4f5962; 
+    transition: background-color 0.2s ease, color 0.2s ease;
+    position: relative; /* Para .icon e .seta */
+}
+
+.menu-principal li a:hover, .menu-principal li .submenu-toggle:hover {
+    background-color: #495057; 
+    color: #fff;
+}
+
+.menu-principal li a.active, .menu-principal li .submenu-toggle.active {
+    background-color: #007bff; 
+    color: #fff;
+}
+
+.menu-principal .icon {
+    margin-right: 10px;
+    display: inline-block;
+    width: 20px; 
+}
+
+.submenu-toggle {
+    cursor: pointer;
+}
+
+.submenu-toggle .seta {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease;
+}
+
+.submenu-toggle.open .seta {
+    transform: translateY(-50%) rotate(90deg); 
+}
+
+.submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #2c3034; 
+    display: none; 
+    overflow: hidden;
+}
+
+.submenu li a {
+    padding: 12px 20px 12px 40px; 
+    border-bottom: 1px solid #44494f; 
+    font-size: 0.95em;
+}
+.submenu li:last-child a { /* Remove a borda do último item do submenu */
+    border-bottom: none;
+}
+
+.submenu li a:hover {
+    background-color: #525960;
+}
+
+.submenu li a.active {
+    background-color: #0069d9; 
+    color: #fff;
+}
+
+.main-content {
+    margin-left: 260px; 
+    padding: 0;
+    width: calc(100% - 260px); 
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    min-height: 100vh;
+}
+
+.top-header {
+    background-color: #fff; 
+    padding: 0 30px; /* Ajustado para alinhar com page-content */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px; 
+    box-sizing: border-box;
+    position: sticky; /* Faz o cabeçalho superior fixo ao rolar */
+    top: 0;
+    z-index: 999; /* Abaixo do sidebar mas acima do conteúdo */
+}
+
+.top-header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    color: #343a40;
+}
+
+.page-content {
+    padding: 20px 30px; 
+}
+
+.page-content h2 {
+    color: #343a40;
+    margin-top: 0;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.6em;
+}
+
+.page-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.page-content th, .page-content td {
+    border: 1px solid #dee2e6;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.page-content th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.page-content tr:nth-child(even) {
+    background-color: #f8f9fa80; /* Zebrado suave */
+}
+
+.page-content .actions a, .page-content .actions button {
+    margin-right: 8px;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border: none; /* Garante que botões não tenham borda padrão */
+}
+
+.page-content .btn-new {
+    display: inline-block;
+    background-color: #28a745; 
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border: none;
+}
+.page-content .btn-new:hover { background-color: #218838; }
+
+.page-content .btn-edit {
+    background-color: #ffc107; color: #212529; 
+}
+.page-content .btn-edit:hover { background-color: #e0a800; }
+
+.page-content .btn-delete {
+    background-color: #dc3545; color: white; 
+}
+.page-content .btn-delete:hover { background-color: #c82333; }
+
+
+.page-content form {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.page-content form div {
+    margin-bottom: 15px;
+}
+.page-content label {
+    display: block;
+    margin-bottom: 8px;
+    color: #495057;
+    font-weight: 500;
+}
+.page-content input[type="text"],
+.page-content input[type="email"],
+.page-content input[type="password"],
+.page-content input[type="number"],
+.page-content input[type="date"],
+.page-content select {
+    width: calc(100% - 24px); /* Ajustado para padding */
+    padding: 10px 12px; /* Aumentado padding interno */
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+.page-content input[type="checkbox"] {
+    margin-right: 8px;
+    vertical-align: middle;
+    width: auto; /* Checkbox não precisa de largura total */
+}
+.page-content .checkbox-label {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 0; 
+    font-weight: normal; /* Labels de checkbox não precisam ser negrito */
+}
+.page-content button[type="submit"] {
+    padding: 10px 20px; /* Aumentado padding do botão */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+.page-content button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+.page-content .cancel-link {
+    display: inline-block;
+    margin-left: 10px;
+    color: #6c757d;
+    text-decoration: none;
+    vertical-align: middle; 
+    padding: 10px 0; /* Para melhor alinhamento vertical com o botão */
+}
+.page-content .cancel-link:hover {
+    text-decoration: underline;
+}
+/* Estilos para submenus de segundo nível */
+.menu-principal .submenu .menu-item.nivel-2 > .submenu-toggle {
+    /* Levemente diferente do submenu-toggle de primeiro nível, se desejar */
+    /* Exemplo: um pouco menos de padding ou cor de fundo sutilmente diferente */
+    padding-left: 30px; /* Maior indentação para o toggle do sub-submenu */
+}
+
+.menu-principal .submenu .menu-item.nivel-2 > .submenu {
+    /* Fundo para o submenu de terceiro nível, se houver */
+    background-color: #202327; /* Um pouco mais escuro que o submenu de primeiro nível */
+}
+
+.menu-principal .submenu .menu-item.nivel-2 > .submenu li a {
+    padding-left: 50px; /* Maior indentação para os itens finais */
+}
