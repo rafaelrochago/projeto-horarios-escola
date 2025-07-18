@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const db = require('./database/database'); // Importa a configuração do banco e o objeto db
-// const bcrypt = require('bcryptjs'); // Descomente quando for implementar hash de senha
+const bcrypt = require('bcryptjs'); // Biblioteca para hash de senha
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -487,9 +487,8 @@ app.post('/api/usuarios', async (req, res) => {
     }
 
     // TODO: Validação de existência dos IDs de chave estrangeira no banco (id_tipo_usuario, id_nivel_acesso, id_cad_escola se fornecido)
-    // const sal = await bcrypt.genSalt(10); // Para hash de senha
-    // const senhaHash = await bcrypt.hash(senhaOriginal, sal); // Para hash de senha
-    const senhaHash = senhaOriginal; // SUBSTITUIR PELO HASH REAL
+    const sal = await bcrypt.genSalt(10);
+    const senhaHash = await bcrypt.hash(senhaOriginal, sal);
 
     const sql = `INSERT INTO cadastro_usuarios 
                  (nome_completo, email, matricula, data_admissao, id_cad_escola, id_tipo_usuario, id_nivel_acesso, senha, status_usuario)
@@ -590,9 +589,8 @@ app.put('/api/usuarios/:id', async (req, res) => {
     let senhaFoiAlterada = false;
 
     if (senha && senha.trim() !== "") {
-        // const sal = await bcrypt.genSalt(10);
-        // const senhaHash = await bcrypt.hash(senha, sal);
-        const senhaHash = senha; // REMOVER QUANDO USAR BCRYPT
+        const sal = await bcrypt.genSalt(10);
+        const senhaHash = await bcrypt.hash(senha, sal);
         sqlUpdate = `UPDATE cadastro_usuarios SET 
                      nome_completo = ?, email = ?, matricula = ?, data_admissao = ?, 
                      id_cad_escola = ?, id_tipo_usuario = ?, id_nivel_acesso = ?, 
