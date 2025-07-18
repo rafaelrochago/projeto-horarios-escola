@@ -1,0 +1,25 @@
+# Node dependencies
+node_modules/
+
+# Database files
+escola.db
+
+# Misc generated files
+.temp*
+*.log
+
+# VS Code temporary files
+.vscode/
+
+# Temporary files
+*~
+.DS_Store
+
+# Node debug output
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Others
+launch.json
+tempCodeRunnerFile.js
