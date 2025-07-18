@@ -3,7 +3,8 @@ const path = require('path');
 
 // Define o caminho para o arquivo do banco de dados.
 // Ele será criado na raiz do projeto se não existir.
-const dbPath = path.resolve(__dirname, '..', 'escola.db'); // Coloca escola.db na raiz do projeto
+// Caminho para o arquivo do banco de dados na pasta do projeto
+const dbPath = path.resolve(__dirname, 'escola.db');
 
 // Cria (ou abre) o banco de dados
 const db = new sqlite3.Database(dbPath, (err) => {
